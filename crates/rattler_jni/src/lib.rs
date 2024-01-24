@@ -1,6 +1,7 @@
 use jni::JNIEnv;
 
-use jni::objects::{JClass, JList, JObject};
+use jni::objects::{AutoLocal, JClass, JList, JObject};
+use jni::strings::JNIString;
 
 #[no_mangle]
 pub extern "system" fn Java_org_mamba_rattler_Rattler_create<'local>(
@@ -9,10 +10,17 @@ pub extern "system" fn Java_org_mamba_rattler_Rattler_create<'local>(
     input: JObject<'local>,
 ) {
     let specs: JObject<'local> = env
-        .call_method(&input, "getSpecs", "()Ljava/util/List", &[])
+        .call_method(&input, "getSpecs", "()Ljava/util/List;", &[])
         .unwrap()
         .l()
         .unwrap();
+    let spec_list = env.get_list(&specs).unwrap();
+
+    let mut iterator = spec_list.iter(&mut env).unwrap();
+    while let Some(obj) = iterator.next(&mut env).unwrap() {
+        let str = env.get_string((&obj).into()).unwrap();
+        println!("{}", <JNIString as Into<String>>::into(str.to_owned()));
+    }
 }
 
 /*

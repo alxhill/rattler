@@ -36,6 +36,16 @@ java {
 }
 
 tasks.named('test') {
+    systemProperty "java.library.path", "build/natives/lib"
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+task runJniRattler(type: JavaExec) {
+    dependsOn build
+    description = "Run the rattler jni integration"
+    classpath = sourceSets.main.runtimeClasspath
+    systemProperty "java.library.path", "/Users/alxhill/dev/rust/rattler/target/debug"
+    main = "org.mamba.rattler.Rattler"
+    args "testing"
 }

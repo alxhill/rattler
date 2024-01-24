@@ -11,6 +11,10 @@ public class CreateOpts {
     private final Optional<String> platform;
     private final List<String> virtualPackage;
 
+    public CreateOpts(List<String> specs) {
+        this(List.of(), specs, false, Optional.empty(), List.of());
+    }
+
     public CreateOpts(List<String> channels, List<String> specs, boolean dryRun, Optional<String> platform, List<String> virtualPackage) {
         this.channels = channels;
         this.specs = specs;

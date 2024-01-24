@@ -5,13 +5,13 @@ import java.util.Optional;
 
 class Rattler {
 
-    private static native void create(List<String> constraints);
+    private static native boolean create(CreateOpts opts);
 
     static {
         System.loadLibrary("rattler_jni");
     }
 
     public static void main(String[] args) {
-        create(List.of(args[0]));
+        create(new CreateOpts(List.of(args[0])));
     }
 }

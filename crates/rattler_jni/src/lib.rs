@@ -1,7 +1,6 @@
 use jni::JNIEnv;
 
-use jni::objects::{AutoLocal, JClass, JList, JObject};
-use jni::strings::JNIString;
+use jni::objects::{JClass, JObject};
 
 #[no_mangle]
 pub extern "system" fn Java_org_mamba_rattler_Rattler_create<'local>(
@@ -18,8 +17,8 @@ pub extern "system" fn Java_org_mamba_rattler_Rattler_create<'local>(
 
     let mut iterator = spec_list.iter(&mut env).unwrap();
     while let Some(obj) = iterator.next(&mut env).unwrap() {
-        let str = env.get_string((&obj).into()).unwrap();
-        println!("{}", <JNIString as Into<String>>::into(str.to_owned()));
+        let str: String = env.get_string((&obj).into()).unwrap().into();
+        println!("{}", str);
     }
 }
 
